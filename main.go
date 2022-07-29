@@ -49,3 +49,15 @@ func Dialog(title string, message string) bool {
 	// true if Yes, false if No
 	return responseValue == IDYES
 }
+// Create a "lazy" dialog (without default focus) that closes choosing Ok or No, returns true if Ok and false if No. Can't be closed via close button.
+func LazyDialog(title string, message string) bool {
+	lpCaption, _ := syscall.UTF16PtrFromString(title)
+	lpText, _ := syscall.UTF16PtrFromString(message)
+	responseValue, _, _ := procMessageBox.Call(uintptr(0x00),
+		uintptr(unsafe.Pointer(lpText)),
+		uintptr(unsafe.Pointer(lpCaption)),
+		uintptr(MB_YESNO))
+
+	// true if Yes, false if No
+	return responseValue == IDYES
+}
